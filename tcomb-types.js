@@ -1,6 +1,6 @@
-//     https://github.com/gcanti/tcomb-types
-//     (c) 2014 Giulio Canti
-//     tcomb-types.js may be freely distributed under the MIT license.
+// https://github.com/gcanti/tcomb-types
+// (c) 2014 Giulio Canti
+// tcomb-types.js may be freely distributed under the MIT license.
 
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -25,67 +25,67 @@
   }
 
   //
-  // combinator utils
+  // combinators
   //
 
-  function regexp(re, name) {
+  function regexp(re, Type, name) {
     return addMetaProps(
-      subtype(Str, function (s) { return re.test(s); }, name), 
-      {re: re}
+      subtype(Type || Str, function (s) { return re.test(s); }, name), 
+      {regexp: re}
     );
   }
 
   function minLength(minLength, Type, name) {
     return addMetaProps(
-      subtype(Type, function (x) { return x.length >= minLength; }, name), 
+      subtype(Type || Str, function (x) { return x.length >= minLength; }, name), 
       {minLength: minLength}
     );
   } 
 
   function maxLength(maxLength, Type, name) {
     return addMetaProps(
-      subtype(Type, function (x) { return x.length <= maxLength; }, name), 
+      subtype(Type || Str, function (x) { return x.length <= maxLength; }, name), 
       {maxLength: maxLength}
     );
   } 
 
   function min(min, Type, name) {
     return addMetaProps(
-      subtype(Type, function (x) { return x >= min; }, name), 
+      subtype(Type || Num, function (x) { return x >= min; }, name), 
       {min: min}
     );
   } 
 
   function minExcluded(minExcluded, Type, name) {
     return addMetaProps(
-      subtype(Type, function (x) { return x > minExcluded; }, name), 
+      subtype(Type || Num, function (x) { return x > minExcluded; }, name), 
       {minExcluded: minExcluded}
     );
   } 
 
   function max(max, Type, name) {
     return addMetaProps(
-      subtype(Type, function (x) { return x <= max; }, name), 
+      subtype(Type || Num, function (x) { return x <= max; }, name), 
       {max: max}
     );
   }
 
   function maxExcluded(maxExcluded, Type, name) {
     return addMetaProps(
-      subtype(Type, function (x) { return x < maxExcluded; }, name), 
+      subtype(Type || Num, function (x) { return x < maxExcluded; }, name), 
       {maxExcluded: maxExcluded}
     );
   }
 
-  function between(min, max, Type, name) {
+  function between(opts, Type, name) {
     return addMetaProps(
-      subtype(Type, function (x) { return x >= min && x <= max; }, name), 
-      {min: min, max: max}
+      subtype(Type || Num, function (x) { return x >= opts.min && x <= opts.max; }, name), 
+      {between: opts}
     );
   }
 
   //
-  // strings
+  // string types
   //
 
   // regexps from
@@ -102,26 +102,27 @@
     all: /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/i
   };
 
-  var Email = regexp(email, 'Email');
-  var Alpha = regexp(alpha, 'Alpha');
-  var Alphanumeric = regexp(alphanumeric, 'Alphanumeric');
-  var Numeric = regexp(numeric, 'Numeric');
-  var UUID3 = regexp(uuid['3'], 'UUID3');
-  var UUID4 = regexp(uuid['4'], 'UUID4');
-  var UUID5 = regexp(uuid['5'], 'UUID5');
-  var UUID = regexp(uuid.all, 'UUID');
+  var Email = regexp(email, Str, 'Email');
+  var Alpha = regexp(alpha, Str, 'Alpha');
+  var Alphanumeric = regexp(alphanumeric, Str, 'Alphanumeric');
+  var Numeric = regexp(numeric, Str, 'Numeric');
+  var UUID3 = regexp(uuid['3'], Str, 'UUID3');
+  var UUID4 = regexp(uuid['4'], Str, 'UUID4');
+  var UUID5 = regexp(uuid['5'], Str, 'UUID5');
+  var UUID = regexp(uuid.all, Str, 'UUID');
 
   //
-  // numbers
+  // number types
   //
 
   var Int = subtype(Num, function (x) {
     return x === parseInt(x, 10);
   }, 'Int');
-  var Positive = min(0, Num, 'Positive');
-  var PositiveInt = min(0, Int, 'PositiveInt');
+  var Positive = minExcluded(0, Num, 'Positive');
+  var PositiveInt = minExcluded(0, Int, 'PositiveInt');
   var Negative = maxExcluded(0, Num, 'Negative');
   var NegativeInt = maxExcluded(0, Int, 'NegativeInt');
+  var Percentage = between({min: 0, max: 100}, Num, 'Percentage');
 
   // export tcomb
   return mixin({
@@ -153,7 +154,8 @@
     Positive: Positive,
     PositiveInt: PositiveInt,
     Negative: Negative,
-    NegativeInt: NegativeInt
+    NegativeInt: NegativeInt,
+    Percentage: Percentage
   
   }, t);
 

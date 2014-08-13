@@ -30,7 +30,7 @@ describe('Alpha', function() {
   it('should accept alpha', function() {
       ok(T.is('a'));
   });
-  it('should reject not alpha', function() {
+  it('should reject non alpha', function() {
       ko(T.is('1'));
       ko(T.is('@'));
   });
@@ -42,7 +42,7 @@ describe('Alphanumeric', function() {
       ok(T.is('a'));
       ok(T.is('1'));
   });
-  it('should reject numbers and non alpha characters', function() {
+  it('should reject non alphanumeric', function() {
       ko(T.is('@'));
   });
 });
@@ -52,7 +52,7 @@ describe('Numeric', function() {
   it('should accept numeric', function() {
       ok(T.is('1'));
   });
-  it('should reject not numeric', function() {
+  it('should reject non numeric', function() {
       ko(T.is('a'));
       ko(T.is('@'));
   });
@@ -63,7 +63,7 @@ describe('UUID', function() {
   it('should accept uuids', function() {
       ok(T.is('73a00360-22bc-11e4-8c21-0800200c9a66'));
   });
-  it('should reject no uuids', function() {
+  it('should reject non uuids', function() {
       ko(T.is('a'));
   });
 });
@@ -79,7 +79,7 @@ describe('Int', function() {
       ok(T.is(1));
       ok(T.is(-1));
   });
-  it('should reject floats', function() {
+  it('should reject non integers', function() {
       ko(T.is(1.1));
   });
 });
@@ -87,10 +87,10 @@ describe('Int', function() {
 describe('Positive', function() {
   var T = tt.Positive; 
   it('should accept positive numbers', function() {
-      ok(T.is(0));
       ok(T.is(1));
   });
   it('should reject negative numbers', function() {
+      ko(T.is(0));
       ko(T.is(-1));
   });
 });
@@ -109,10 +109,10 @@ describe('Negative', function() {
 describe('PositiveInt', function() {
   var T = tt.PositiveInt; 
   it('should accept positive int numbers', function() {
-      ok(T.is(0));
       ok(T.is(1));
   });
-  it('should reject negative number or positive floats', function() {
+  it('should reject non positive int numbers', function() {
+      ko(T.is(0));
       ko(T.is(-1));
       ko(T.is(1.1));
   });
@@ -123,9 +123,23 @@ describe('NegativeInt', function() {
   it('should accept negative int numbers', function() {
       ok(T.is(-1));
   });
-  it('should reject positive number or negative floats', function() {
+  it('should reject non negative int numbers', function() {
       ko(T.is(1));
       ko(T.is(0));
       ko(T.is(-1.1));
+  });
+});
+
+describe('Percentage', function() {
+  var T = tt.Percentage; 
+  it('should accept percentages', function() {
+      ok(T.is(0));
+      ok(T.is(50));
+      ok(T.is(20.5));
+      ok(T.is(100));
+  });
+  it('should reject non percentages', function() {
+      ko(T.is(-1));
+      ko(T.is(101));
   });
 });
