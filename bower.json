@@ -1,0 +1,29 @@
+{
+  "name": "tcomb-commons",
+  "main": "tcomb-commons.js",
+  "version": "0.0.1",
+  "homepage": "https://github.com/gcanti/tcomb-commons",
+  "authors": [
+    "gcanti <giulio.canti@gmail.com>"
+  ],
+  "description": "A database of types and combinators written with tcomb",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [ 
+    "tcomb",
+    "combinators",
+    "types",
+    "database"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
