@@ -8,6 +8,10 @@ A database of types and combinators written with [tcomb](https://github.com/gcan
 
 Run `mocha` in the project root.
 
+## Attributions
+
+Used regexps from: [https://github.com/chriso/validator.js](https://github.com/chriso/validator.js)
+
 ## Contribution
 
 If you do have a contribution for the package feel free to put up a Pull Request or open an Issue.
