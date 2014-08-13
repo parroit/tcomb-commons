@@ -1,7 +1,7 @@
 {
   "name": "tcomb-types",
   "version": "0.0.1",
-  "description": "A database of types written with tcomb",
+  "description": "A database of types and combinators written with tcomb",
   "main": "tcomb-types.js",
   "scripts": {
     "test": "mocha"
