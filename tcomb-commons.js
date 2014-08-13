@@ -8,7 +8,7 @@
   } else if (typeof exports === 'object') {
     module.exports = factory(require('tcomb'));
   } else {
-    root.tt = factory(root.t);
+    root.tc = factory(root.t);
   }
 }(this, function (t) {
 
@@ -84,6 +84,12 @@
     );
   }
 
+  function either(A, B, name) {
+    return subtype(tuple([maybe(A), maybe(B)]), function (x) {
+      return Nil.is(x[0]) !== Nil.is(x[1]);
+    }, name);
+  }
+
   //
   // string types
   //
@@ -138,6 +144,7 @@
     max: max,
     maxExcluded: maxExcluded,
     between: between,
+    either: either,
     
     // strings
     Email: Email,

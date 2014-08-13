@@ -55,6 +55,13 @@ var Negative = maxExcluded(0);
 var Percentage = between({min: 0, max: 100});
 ```
 
+### either(A, B, [name])
+
+```javascript
+// node.js style callback
+var Callback = either(Err, Obj);
+```
+
 ## Types
 
 ### Strings
