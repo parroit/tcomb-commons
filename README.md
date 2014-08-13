@@ -1,4 +1,4 @@
-# tcomb-types
+# tcomb-commons
 
 A database of types and combinators written with [tcomb](https://github.com/gcanti/tcomb)
 
