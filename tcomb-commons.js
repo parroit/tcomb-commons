@@ -1,6 +1,6 @@
-// https://github.com/gcanti/tcomb-types
+// https://github.com/gcanti/tcomb-commons
 // (c) 2014 Giulio Canti
-// tcomb-types.js may be freely distributed under the MIT license.
+// tcomb-commons.js may be freely distributed under the MIT license.
 
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
