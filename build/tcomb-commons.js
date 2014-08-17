@@ -24,8 +24,6 @@
 
     ## License (MIT)
 
-    ## Api
-
 **/
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -222,49 +220,6 @@
   /**
       ## Functions
   **/
-
-  function either(A, B, name) {
-    return subtype(tuple([maybe(A), maybe(B)]), function (x) {
-      return Nil.is(x[0]) !== Nil.is(x[1]);
-    }, name);
-  }
-
-  //
-  // validation
-  //
-
-  function pushAll(arr, elements) {
-    Array.prototype.push.apply(arr, elements);
-  }
-
-  var ValidationErr = t.struct({
-    expected: t.Str,
-    actual: t.Any
-  });
-
-  function validate(T, x) {
-    var result = [];
-
-    switch (T.meta.kind) {
-      case 'primitive' :
-      case 'enums' :
-      case 'tuple' :
-        if (!T.is(x)) {
-          result.push(new Error(t.format('%s:%o', t.getName(T), x)));
-        }
-        break;
-      case 'maybe' :
-        if (!Nil.is(x)) {
-          pushAll(result, validate(T.meta.type, x));
-        }
-        break;
-      default :
-        throw new Error('unsupported validation');
-    }
-
-    return result;
-  }
-
   function toPropTypes(Struct) {
     var ret = {};
     var props = Struct.meta.props;
@@ -281,26 +236,48 @@
     }
     return ret;
   }
+  function pushAll(arr, elements) {
+    Array.prototype.push.apply(arr, elements);
+  }
+  
+  var ValidationErr = t.struct({
+    expected: t.Str,
+    actual: t.Any
+  });
+  
+  function validate(T, x) {
+    var result = [];
+  
+    switch (T.meta.kind) {
+      case 'primitive' :
+      case 'enums' :
+      case 'tuple' :
+        if (!T.is(x)) {
+          result.push(new Error(t.format('%s:%o', t.getName(T), x)));
+        }
+        break;
+      case 'maybe' :
+        if (!Nil.is(x)) {
+          pushAll(result, validate(T.meta.type, x));
+        }
+        break;
+      default :
+        throw new Error('unsupported validation');
+    }
+  
+    return result;
+  }
 
-  return mixin({
-    
-    addMetaProps: addMetaProps,
-
-    // combinators
-    regexp: regexp,
-    minLength: minLength,
+  return {
+    between: between,
+    max: max,
+    maxExcluded: maxExcluded,
     maxLength: maxLength,
     min: min,
     minExcluded: minExcluded,
-    max: max,
-    maxExcluded: maxExcluded,
-    between: between,
-    either: either,
-    
-    // functions
-    toPropTypes: toPropTypes,
+    minLength: minLength,
+    regexp: regexp,
 
-    // strings
     Email: Email,
     Alpha: Alpha,
     Alphanumeric: Alphanumeric,
@@ -309,8 +286,7 @@
     UUID4: UUID4,
     UUID5: UUID5,
     UUID: UUID,
-    
-    // numbers
+
     Int: Int,
     Positive: Positive,
     PositiveInt: PositiveInt,
@@ -318,9 +294,9 @@
     NegativeInt: NegativeInt,
     Percentage: Percentage,
 
-    // validation
+    toPropTypes: toPropTypes,
     validate: validate
-  
-  }, t);
+
+  };
 
 }));

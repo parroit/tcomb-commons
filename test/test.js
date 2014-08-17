@@ -1,9 +1,10 @@
 "use strict";
 var assert = require('assert');
+var t = require('tcomb');
 var tc = require('../build/tcomb-commons');
 
-var maybe = tc.maybe;
-var Str = tc.Str;
+var maybe = t.maybe;
+var Str = t.Str;
 
 //
 // setup
@@ -145,18 +146,6 @@ describe('Percentage', function() {
       ko(T.is(-1));
       ko(T.is(101));
   });
-});
-
-describe('either', function(){
-    // node.js style callback
-    var Callback = tc.either(tc.Err, tc.Obj);
-    it('should return true when x is an either', function() {
-        ok(Callback.is([null, {}]));
-        ok(Callback.is([new Error(), null]));
-    });
-    it('should return false when x is not an either', function() {
-        ko(Callback.is([null, null]));
-    });
 });
 
 describe('validate', function(){

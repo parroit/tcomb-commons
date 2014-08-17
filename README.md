@@ -18,8 +18,6 @@ If you do have a contribution for the package feel free to put up a Pull Request
 
 ## License (MIT)
 
-## Api
-
 ## Combinators
 
 ### minLength(minLength, [Type=Str], [name])
