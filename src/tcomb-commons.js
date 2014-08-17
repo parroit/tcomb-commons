@@ -18,6 +18,9 @@
   var Num = t.Num;
   var subtype = t.subtype;
   var mixin = t.mixin;
+  var maybe = t.maybe;
+  var tuple = t.tuple;
+  var Nil = t.Nil;
 
   function addMetaProps(Type, props) {
     mixin(Type.meta, props);
@@ -130,7 +133,59 @@
   var NegativeInt = maxExcluded(0, Int, 'NegativeInt');
   var Percentage = between({min: 0, max: 100}, Num, 'Percentage');
 
-  // export tcomb
+  //
+  // validation
+  //
+
+  function pushAll(arr, elements) {
+    Array.prototype.push.apply(arr, elements);
+  }
+
+  var ValidationErr = t.struct({
+    expected: t.Str,
+    actual: t.Any
+  });
+
+  function validate(T, x) {
+    var result = [];
+
+    switch (T.meta.kind) {
+      case 'primitive' :
+      case 'enums' :
+      case 'tuple' :
+        if (!T.is(x)) {
+          result.push(new Error(t.print('%s:%o', t.getName(T), x)));
+        }
+        break;
+      case 'maybe' :
+        if (!Nil.is(x)) {
+          pushAll(result, validate(T.meta.type, x));
+        }
+        break;
+      default :
+        throw new Error('unsupported validation');
+    }
+
+    return result;
+  }
+
+  function toPropTypes(Struct) {
+    var ret = {};
+    var props = Struct.meta.props;
+    for (var k in props) {
+      if (props.hasOwnProperty(k)) {
+        ret[k] = function (values, name, component) {
+          var Type = props[name];
+          var value = values[name];
+          if (!Type.is(value)) {
+            return new Error(print('Invalid prop `%s` of value `%s` supplied to `%s`, expected a %s.', name, value, component, t.getName(Type)));
+          }
+        }
+      }
+    }
+    return ret;
+  }
+
   return mixin({
     
     addMetaProps: addMetaProps,
@@ -146,6 +201,9 @@
     between: between,
     either: either,
     
+    // functions
+    toPropTypes: toPropTypes,
+
     // strings
     Email: Email,
     Alpha: Alpha,
@@ -162,7 +220,10 @@
     PositiveInt: PositiveInt,
     Negative: Negative,
     NegativeInt: NegativeInt,
-    Percentage: Percentage
+    Percentage: Percentage,
+
+    // validation
+    validate: validate
   
   }, t);
 
