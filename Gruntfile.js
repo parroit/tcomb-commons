@@ -17,8 +17,8 @@ module.exports = function (grunt) {
           banner: banner + '\n\n'
         },
         files: {
-          'build/tcomb.js': [
-            'src/tcomb.js'
+          'build/tcomb-commons.js': [
+            'src/tcomb-commons.js'
           ]
         }
       }
@@ -45,7 +45,7 @@ module.exports = function (grunt) {
     },
 
     emu: {
-      'README.md': 'build/tcomb.js'
+      'README.md': 'build/tcomb-commons.js'
     }
 
   });
@@ -57,8 +57,6 @@ module.exports = function (grunt) {
 
   // tasks
   grunt.registerMultiTask('emu', function () {
-    // TODO documentation
-    return;
     var emu = require('emu'),
       fs = require('fs'),
       source = fs.readFileSync(this.data, 'utf8');

@@ -175,6 +175,5 @@ describe('validate', function(){
       ok(validate(T, null).length === 0);
       ok(validate(T, 'a').length === 0);
       ok(validate(T, 1).length === 1);
-      console.log(validate(T, 1));
     });
 });

@@ -1,5 +1,5 @@
 {
-  "name": "tcomb-types",
+  "name": "tcomb-commons",
   "version": "0.0.1",
   "description": "A database of types and combinators written with tcomb",
   "main": "build/tcomb-commons.js",
@@ -20,6 +20,7 @@
   "bugs": {
     "url": "https://github.com/gcanti/tcomb-commons/issues"
   },
+  "homepage": "https://github.com/gcanti/tcomb-commons",
   "devDependencies": {
     "mocha": "*",
     "grunt": "*",
