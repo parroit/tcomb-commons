@@ -1,0 +1,11 @@
+<!-- this file is for try new ideas and fast debug -->
+<script src="../node_modules/tcomb/build/tcomb.js"></script>
+<script src="../build/tcomb-commons.js"></script>
+<script>
+var Str = t.Str;
+var Num = t.Num;
+var T = tc.either(Str, Num);
+var t = T({left: 'a', right: null});
+console.log(T.prototype);
+t.isLeft();
+</script>

@@ -1,5 +1,5 @@
 /**
-    ### min(min, [Type=Num], [name])
+    ### min(min, [T=Num], [name])
 
     ```javascript
     var Celsius = min(−273.15);

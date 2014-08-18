@@ -1,5 +1,5 @@
 /**
-    ### max(max, [Type=Num], [name])
+    ### max(max, [T=Num], [name])
 
     ```javascript
     var Minute = max(60);

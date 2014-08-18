@@ -1,5 +1,5 @@
 /**
-    ### minExcluded(minExcluded, [Type=Num], [name])
+    ### minExcluded(minExcluded, [T=Num], [name])
 
     ```javascript
     var Positive = minExcluded(0);

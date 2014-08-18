@@ -5,6 +5,9 @@ var tc = require('../build/tcomb-commons');
 
 var maybe = t.maybe;
 var Str = t.Str;
+var Num = t.Num;
+var Err = t.Err;
+var getName = t.getName;
 
 //
 // setup
@@ -12,8 +15,39 @@ var Str = t.Str;
 
 var ok = function (x) { assert.strictEqual(true, x); };
 var ko = function (x) { assert.strictEqual(false, x); };
-var throws = assert.throws;
+var eq = assert.strictEqual;
+var throwsWithMessage = function (f, message) {
+  assert['throws'](f, function (err) {
+    ok(err instanceof Error);
+    eq(err.message, message);
+    return true;
+  });
+};
 var doesNotThrow = assert.doesNotThrow;
+
+//
+// combinators
+//
+describe('either', function() {
+  it('should have a meaninful default name', function() {
+    var T = tc.either(Str, Num); 
+    eq(getName(T), 'Either(Str, Num)')
+  });
+  it('should handle only one branch', function() {
+    var T = tc.either(Str, Num);
+    throwsWithMessage(function () {
+      var t = T({left: null, right: null});
+    }, 'bad type value `Either(Str, Num)`');
+    throwsWithMessage(function () {
+      var t = T({left: 'a', right: 1});
+    }, 'bad type value `Either(Str, Num)`');
+  });
+  it('should have a isLeft method', function() {
+    var T = tc.either(Str, Num);
+    var t = T({left: 'a', right: null});
+    ok(t.isLeft());
+  });
+});
 
 //
 // strings
@@ -147,6 +181,10 @@ describe('Percentage', function() {
       ko(T.is(101));
   });
 });
+
+//
+// functions
+//
 
 describe('validate', function(){
     var validate = tc.validate;

@@ -1,5 +1,5 @@
 /**
-    ### maxLength(maxLength, [Type=Str], [name])
+    ### maxLength(maxLength, [T=Str], [name])
 
     ```javascript
     var Zip = maxLength(4);

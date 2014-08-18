@@ -1,7 +1,7 @@
 /**
     # tcomb-commons
 
-    A database of types and combinators written with [tcomb](https://github.com/gcanti/tcomb)
+    A database of types, combinators and functions built with and for [tcomb](https://github.com/gcanti/tcomb) (work in progress)
 
     **Work in progress**
 
@@ -32,24 +32,37 @@
 
   "use strict";
 
+  var Nil = t.Nil;
   var Str = t.Str;
   var Num = t.Num;
+  var struct = t.struct;
   var subtype = t.subtype;
   var mixin = t.mixin;
   var maybe = t.maybe;
   var tuple = t.tuple;
-  var Nil = t.Nil;
+  var format = t.format;
+  var getName = t.getName;
 
   // rigger includes (https://github.com/buildjs/rigger)
-  // to view the full library code check out build/tcomb.js
+  // to view the full library code check out build/tcomb-commons.js
 
-  //= utils.js
+  function alternativeProps(p1, p2) {
+    return function (x) {
+      return Nil.is(x[p1]) !== Nil.is(x[p2]);
+    }
+  }
 
-  //= combinators/_rig
+  function concurrentProps(p1, p2) {
+    return function (x) {
+      return Nil.is(x[p1]) === Nil.is(x[p2]);
+    }
+  }
 
-  //= types/_rig
+  //= combinators/index.js
 
-  //= functions/_rig
+  //= types/index.js
+
+  //= functions/index.js
 
   return {
     between: between,
@@ -60,6 +73,7 @@
     minExcluded: minExcluded,
     minLength: minLength,
     regexp: regexp,
+    either: either,
 
     Email: Email,
     Alpha: Alpha,

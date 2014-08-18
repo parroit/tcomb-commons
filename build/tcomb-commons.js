@@ -6,7 +6,7 @@
 /**
     # tcomb-commons
 
-    A database of types and combinators written with [tcomb](https://github.com/gcanti/tcomb)
+    A database of types, combinators and functions built with and for [tcomb](https://github.com/gcanti/tcomb) (work in progress)
 
     **Work in progress**
 
@@ -37,27 +37,43 @@
 
   "use strict";
 
+  var Nil = t.Nil;
   var Str = t.Str;
   var Num = t.Num;
+  var struct = t.struct;
   var subtype = t.subtype;
   var mixin = t.mixin;
   var maybe = t.maybe;
   var tuple = t.tuple;
-  var Nil = t.Nil;
+  var format = t.format;
+  var getName = t.getName;
 
   // rigger includes (https://github.com/buildjs/rigger)
-  // to view the full library code check out build/tcomb.js
+  // to view the full library code check out build/tcomb-commons.js
 
-  function addMetaProps(Type, props) {
-    mixin(Type.meta, props);
-    return Type;
+  function alternativeProps(p1, p2) {
+    return function (x) {
+      return Nil.is(x[p1]) !== Nil.is(x[p2]);
+    }
+  }
+
+  function concurrentProps(p1, p2) {
+    return function (x) {
+      return Nil.is(x[p1]) === Nil.is(x[p2]);
+    }
   }
 
   /**
       ## Combinators
   **/
+  
+  function addMetaProps(Type, props) {
+    mixin(Type.meta, props);
+    return Type;
+  }
+  
   /**
-      ### minLength(minLength, [Type=Str], [name])
+      ### minLength(minLength, [T=Str], [name])
   
       ```javascript
       var Password = minLength(8);
@@ -70,7 +86,7 @@
     );
   }
   /**
-      ### maxLength(maxLength, [Type=Str], [name])
+      ### maxLength(maxLength, [T=Str], [name])
   
       ```javascript
       var Zip = maxLength(4);
@@ -83,7 +99,7 @@
     );
   }
   /**
-      ### min(min, [Type=Num], [name])
+      ### min(min, [T=Num], [name])
   
       ```javascript
       var Celsius = min(−273.15);
@@ -96,7 +112,7 @@
     );
   }
   /**
-      ### minExcluded(minExcluded, [Type=Num], [name])
+      ### minExcluded(minExcluded, [T=Num], [name])
   
       ```javascript
       var Positive = minExcluded(0);
@@ -109,7 +125,7 @@
     );
   }
   /**
-      ### max(max, [Type=Num], [name])
+      ### max(max, [T=Num], [name])
   
       ```javascript
       var Minute = max(60);
@@ -122,7 +138,7 @@
     );
   }
   /**
-      ### maxExcluded(maxExcluded, [Type=Num], [name])
+      ### maxExcluded(maxExcluded, [T=Num], [name])
   
       ```javascript
       var Negative = maxExcluded(0);
@@ -135,7 +151,7 @@
     );
   }
   /**
-      ### regexp(re, [Type=Str], [name])
+      ### regexp(re, [T=Str], [name])
   
       ```javascript
       var Numeric = regexp(/^-?[0-9]+$/);
@@ -148,7 +164,7 @@
     );
   }
   /**
-      ### between(opts, [Type=Num], [name])
+      ### between(opts, [T=Num], [name])
   
       ```javascript
       var Percentage = between({min: 0, max: 100});
@@ -159,6 +175,33 @@
       subtype(Type || Num, function (x) { return x >= opts.min && x <= opts.max; }, name), 
       {between: opts}
     );
+  }
+  /**
+      either(A, B, [name])
+  
+      ```javascript
+      var T = either(Str, Num, 'T');
+      var t = T({left: 'a', right: null}); // => $T{left: 'a', right: null}
+      t.isLeft(); // => true
+      ```      
+  **/
+  
+  function either(A, B, name) {
+  
+    name = name || format('Either(%s, %s)', getName(A), getName(B));
+  
+    var Struct = struct({
+      left: maybe(A),
+      right: maybe(B)
+    }, '$' + name);
+  
+    Struct.prototype.isLeft = function() {
+      return Nil.is(this.right);
+    };
+  
+    var Either = subtype(Struct, alternativeProps('left', 'right'), name);
+  
+    return Either;
   }
 
   /**
@@ -220,6 +263,7 @@
   /**
       ## Functions
   **/
+  
   function toPropTypes(Struct) {
     var ret = {};
     var props = Struct.meta.props;
@@ -229,13 +273,14 @@
           var Type = props[name];
           var value = values[name];
           if (!Type.is(value)) {
-            return new Error(t.format('Invalid prop `%s` of value `%s` supplied to `%s`, expected a %s.', name, value, component, t.getName(Type)));
+            return new Error(format('Invalid prop `%s` of value `%s` supplied to `%s`, expected a %s.', name, value, component, getName(Type)));
           }
         }
       }
     }
     return ret;
   }
+  
   function pushAll(arr, elements) {
     Array.prototype.push.apply(arr, elements);
   }
@@ -277,6 +322,7 @@
     minExcluded: minExcluded,
     minLength: minLength,
     regexp: regexp,
+    either: either,
 
     Email: Email,
     Alpha: Alpha,

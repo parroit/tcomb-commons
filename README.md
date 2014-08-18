@@ -1,6 +1,6 @@
 # tcomb-commons
 
-A database of types and combinators written with [tcomb](https://github.com/gcanti/tcomb)
+A database of types, combinators and functions built with and for [tcomb](https://github.com/gcanti/tcomb) (work in progress)
 
 **Work in progress**
 
@@ -20,52 +20,60 @@ If you do have a contribution for the package feel free to put up a Pull Request
 
 ## Combinators
 
-### minLength(minLength, [Type=Str], [name])
+### minLength(minLength, [T=Str], [name])
   
 ```javascript
 var Password = minLength(8);
 ```
 
-### maxLength(maxLength, [Type=Str], [name])
+### maxLength(maxLength, [T=Str], [name])
   
 ```javascript
 var Zip = maxLength(4);
 ```
 
-### min(min, [Type=Num], [name])
+### min(min, [T=Num], [name])
   
 ```javascript
 var Celsius = min(−273.15);
 ```
 
-### minExcluded(minExcluded, [Type=Num], [name])
+### minExcluded(minExcluded, [T=Num], [name])
   
 ```javascript
 var Positive = minExcluded(0);
 ```
 
-### max(max, [Type=Num], [name])
+### max(max, [T=Num], [name])
   
 ```javascript
 var Minute = max(60);
 ```
 
-### maxExcluded(maxExcluded, [Type=Num], [name])
+### maxExcluded(maxExcluded, [T=Num], [name])
   
 ```javascript
 var Negative = maxExcluded(0);
 ```
 
-### regexp(re, [Type=Str], [name])
+### regexp(re, [T=Str], [name])
   
 ```javascript
 var Numeric = regexp(/^-?[0-9]+$/);
 ```
 
-### between(opts, [Type=Num], [name])
+### between(opts, [T=Num], [name])
   
 ```javascript
 var Percentage = between({min: 0, max: 100});
+```
+
+either(A, B, [name])
+  
+```javascript
+var T = either(Str, Num, 'T');
+var t = T({left: 'a', right: null}); // => $T{left: 'a', right: null}
+t.isLeft(); // => true
 ```
 
 ## Types

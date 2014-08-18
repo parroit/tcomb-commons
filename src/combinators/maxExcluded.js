@@ -1,5 +1,5 @@
 /**
-    ### maxExcluded(maxExcluded, [Type=Num], [name])
+    ### maxExcluded(maxExcluded, [T=Num], [name])
 
     ```javascript
     var Negative = maxExcluded(0);

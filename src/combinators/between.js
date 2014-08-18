@@ -1,5 +1,5 @@
 /**
-    ### between(opts, [Type=Num], [name])
+    ### between(opts, [T=Num], [name])
 
     ```javascript
     var Percentage = between({min: 0, max: 100});

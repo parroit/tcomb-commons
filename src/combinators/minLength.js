@@ -1,5 +1,5 @@
 /**
-    ### minLength(minLength, [Type=Str], [name])
+    ### minLength(minLength, [T=Str], [name])
 
     ```javascript
     var Password = minLength(8);

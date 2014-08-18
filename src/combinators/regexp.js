@@ -1,5 +1,5 @@
 /**
-    ### regexp(re, [Type=Str], [name])
+    ### regexp(re, [T=Str], [name])
 
     ```javascript
     var Numeric = regexp(/^-?[0-9]+$/);
