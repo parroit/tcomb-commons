@@ -5,9 +5,9 @@
     var Celsius = min(−273.15);
     ```
 **/
-function min(min, Type, name) {
+function min(min, T, name) {
   return addMetaProps(
-    subtype(Type || Num, function (x) { return x >= min; }, name), 
+    subtype(T || Num, function (x) { return x >= min; }, name), 
     {min: min}
   );
 } 

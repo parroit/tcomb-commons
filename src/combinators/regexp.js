@@ -5,9 +5,9 @@
     var Numeric = regexp(/^-?[0-9]+$/);
     ```
 **/
-function regexp(re, Type, name) {
+function regexp(re, T, name) {
   return addMetaProps(
-    subtype(Type || Str, function (s) { return re.test(s); }, name), 
+    subtype(T || Str, function (s) { return re.test(s); }, name), 
     {regexp: re}
   );
 }

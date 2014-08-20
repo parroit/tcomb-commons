@@ -5,9 +5,9 @@
     var Zip = maxLength(4);
     ```
 **/
-function maxLength(maxLength, Type, name) {
+function maxLength(maxLength, T, name) {
   return addMetaProps(
-    subtype(Type || Str, function (x) { return x.length <= maxLength; }, name), 
+    subtype(T || Str, function (x) { return x.length <= maxLength; }, name), 
     {maxLength: maxLength}
   );
 } 

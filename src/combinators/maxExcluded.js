@@ -5,9 +5,9 @@
     var Negative = maxExcluded(0);
     ```
 **/
-function maxExcluded(maxExcluded, Type, name) {
+function maxExcluded(maxExcluded, T, name) {
   return addMetaProps(
-    subtype(Type || Num, function (x) { return x < maxExcluded; }, name), 
+    subtype(T || Num, function (x) { return x < maxExcluded; }, name), 
     {maxExcluded: maxExcluded}
   );
 }

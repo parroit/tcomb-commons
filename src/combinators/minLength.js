@@ -5,9 +5,9 @@
     var Password = minLength(8);
     ```
 **/
-function minLength(minLength, Type, name) {
+function minLength(minLength, T, name) {
   return addMetaProps(
-    subtype(Type || Str, function (x) { return x.length >= minLength; }, name), 
+    subtype(T || Str, function (x) { return x.length >= minLength; }, name), 
     {minLength: minLength}
   );
 } 

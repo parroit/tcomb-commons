@@ -5,9 +5,9 @@
     var Positive = minExcluded(0);
     ```
 **/
-function minExcluded(minExcluded, Type, name) {
+function minExcluded(minExcluded, T, name) {
   return addMetaProps(
-    subtype(Type || Num, function (x) { return x > minExcluded; }, name), 
+    subtype(T || Num, function (x) { return x > minExcluded; }, name), 
     {minExcluded: minExcluded}
   );
 } 

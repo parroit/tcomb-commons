@@ -5,9 +5,9 @@
     var Percentage = between({min: 0, max: 100});
     ```
 **/
-function between(opts, Type, name) {
+function between(opts, T, name) {
   return addMetaProps(
-    subtype(Type || Num, function (x) { return x >= opts.min && x <= opts.max; }, name), 
+    subtype(T || Num, function (x) { return x >= opts.min && x <= opts.max; }, name), 
     {between: opts}
   );
 }
